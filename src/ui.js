@@ -8,6 +8,10 @@ class UI {
     this.forState = 'add';
   }
 
+  clearIdInput() {
+    this.idInput.value = '';
+  }
+
   showPosts(posts) {
     let output = '';
 
@@ -47,16 +51,16 @@ class UI {
     container.insertBefore(div, posts);
 
     setTimeout(() => {
-        this.clearAlert()
-    }, 3000)
+      this.clearAlert();
+    }, 3000);
   }
 
   clearAlert() {
-      const currentAlert = document.querySelector('.alert')
+    const currentAlert = document.querySelector('.alert');
 
-      if(currentAlert) {
-          currentAlert.remove()
-      }
+    if (currentAlert) {
+      currentAlert.remove();
+    }
   }
 
   clearFields() {
@@ -64,11 +68,39 @@ class UI {
     this.bodyInput.value = '';
   }
 
-  fillForm (data) {
+  fillForm(data) {
     this.titleInput.value = data.title;
     this.bodyInput.value = data.body;
-    this.idInput.value = data.id
+    this.idInput.value = data.id;
+
+    this.changeFormState('edit');
   }
+
+  changeFormState(type) {
+    if (type === 'edit') {
+      this.postSubmit.textContent = 'Update Posts';
+      this.postSubmit.className = 'post-submit btn btn-warning btn-block';
+
+      const button = document.createElement('button');
+      button.className = 'post-cancel btn btn-light btn-block';
+      button.appendChild(document.createTextNode('Cancel Edit'));
+
+      const cardForm = document.querySelector('.card-form');
+
+      const formEnd = document.querySelector('.form-end');
+      cardForm.insertBefore(button, formEnd);
+    } else {
+      this.postSubmit.textContent = 'Post It';
+      this.postSubmit.className = 'post-submit btn btn-primary btn-block';
+      if(document.querySelector('.post-cancel')){
+        document.querySelector('.post-cancel').remove()
+      }
+      this.clearIdInput()
+      this.clearFields()
+    }
+  }
+
+
 }
 
 export const ui = new UI();
